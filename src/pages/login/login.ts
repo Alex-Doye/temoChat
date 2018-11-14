@@ -68,13 +68,26 @@ export class LoginPage {
 
   }
 
-  doLogin(){
+  doLoginv2(){
     this.userProvider.loginUser(this.account.email, this.account.password).then(
       isConnect => {
         if(isConnect)
-        this.navCtrl.setRoot('ListFriendsPage');
+          this.navCtrl.setRoot('ListFriendsPage');
         else 
-        this.loginErrorString = "connection error";
+          this.loginErrorString = "connection error";
+      }
+    )
+  }
+
+  doLogin(){
+    this.userProvider.loginUser2(this.account.email, this.account.password).then(
+      (data:any) => {
+        if(data.error)
+          this.loginErrorString = "connection error";
+        else{
+          localStorage.setItem("user", data.user);
+          this.navCtrl.setRoot('ListFriendsPage');
+        }
       }
     )
   }

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {User} from "../../models/user";
 import { Storage } from '@ionic/storage';
+import { HttpClient } from '@angular/common/http';
 
 /*
  Generated class for the UserProvider provider.
@@ -14,7 +15,7 @@ export class UserProvider {
   private _user:User = new User();
   private _status:Number = 0;
 
-  constructor(private nativeStorage: Storage,) {
+  constructor(private nativeStorage: Storage, private http: HttpClient) {
     console.log('Hello UserProvider Provider');
     this.statusUsers().then(
       theStatus => this._status = theStatus
@@ -85,6 +86,17 @@ export class UserProvider {
           ) 
         }
         return false;
+      }
+    )
+  }
+
+  loginUser2(email: string, password: string){
+    return new Promise(
+      result => {
+        this.http.post("http://localhost/PHP", {
+          email: email,
+          password: password,
+        }).subscribe(data => result(data));
       }
     )
   }
